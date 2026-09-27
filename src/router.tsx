@@ -22,6 +22,7 @@ import { DashboardLayout } from '@/pages/dashboard/DashboardLayout';
 import { Inbox } from '@/pages/dashboard/Inbox';
 import { Overview } from '@/pages/dashboard/Overview';
 import { PostEditor } from '@/pages/dashboard/PostEditor';
+import { ProjectsAdmin } from '@/pages/dashboard/ProjectsAdmin';
 import { ReviewQueue } from '@/pages/dashboard/ReviewQueue';
 import { Roles } from '@/pages/dashboard/Roles';
 import { Settings } from '@/pages/dashboard/Settings';
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
               'role:manage',
               'ad:manage',
               'user:manage',
+              'portfolio:manage',
             ]}
           >
             <DashboardLayout />
@@ -127,6 +129,14 @@ export const router = createBrowserRouter([
             element: (
               <RequirePermission permissions={['ad:manage']}>
                 <AdvertsAdmin />
+              </RequirePermission>
+            ),
+          },
+          {
+            path: 'projects',
+            element: (
+              <RequirePermission permissions={['portfolio:manage']}>
+                <ProjectsAdmin />
               </RequirePermission>
             ),
           },

@@ -14,11 +14,14 @@ export function MediaUploadButton({
   accept,
   label,
   postId,
+  folder,
   onUploaded,
 }: {
   accept: string;
   label: string;
   postId?: number;
+  /** Which subtree to file this under — e.g. 'projects' for project media. Defaults to 'uploads'. */
+  folder?: string;
   onUploaded: (media: MediaAsset) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +36,7 @@ export function MediaUploadButton({
     setError(null);
     setNotice(null);
     try {
-      const result = await upload.mutateAsync({ file, postId });
+      const result = await upload.mutateAsync({ file, postId, folder });
       onUploaded(result.asset);
       if (result.deduplicated) setNotice('Already in your media library — reused it.');
     } catch (caught) {

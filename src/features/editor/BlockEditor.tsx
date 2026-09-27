@@ -106,7 +106,7 @@ export function BlockEditor({
           <input className="form-control mb-2" value={block.data.url}
             onChange={(event) => onChange({ url: event.target.value })}
             placeholder="https://… or /media/…" required />
-          <MediaUploadButton accept="image/*" label="Image" postId={postId}
+          <MediaUploadButton accept="image/*" label="Image" postId={postId} folder="posts"
             onUploaded={(media) => onChange({ url: media.url, media_id: media.id })} />
           <input className="form-control mt-2 mb-2" value={block.data.alt}
             onChange={(event) => onChange({ alt: event.target.value })}
@@ -123,7 +123,7 @@ export function BlockEditor({
           <input className="form-control mb-2" value={block.data.url}
             onChange={(event) => onChange({ url: event.target.value, embed_url: event.target.value })}
             placeholder="File URL, or a YouTube/Vimeo embed URL" />
-          <MediaUploadButton accept="video/*" label="Video" postId={postId}
+          <MediaUploadButton accept="video/*" label="Video" postId={postId} folder="posts"
             onUploaded={(media) => onChange({ url: media.url, embed_url: media.url, media_id: media.id })} />
           <input className="form-control mt-2" value={block.data.caption}
             onChange={(event) => onChange({ caption: event.target.value })}
@@ -138,7 +138,7 @@ export function BlockEditor({
           <input className="form-control mb-2" value={block.data.url}
             onChange={(event) => onChange({ url: event.target.value })}
             placeholder="Audio file URL" required />
-          <MediaUploadButton accept="audio/*" label="Audio" postId={postId}
+          <MediaUploadButton accept="audio/*" label="Audio" postId={postId} folder="posts"
             onUploaded={(media) => onChange({ url: media.url, media_id: media.id })} />
           <input className="form-control mt-2" value={block.data.title}
             onChange={(event) => onChange({ title: event.target.value })}

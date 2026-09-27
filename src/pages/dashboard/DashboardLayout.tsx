@@ -42,6 +42,7 @@ export function DashboardLayout() {
     },
     { to: '/dashboard/settings', label: 'Settings', icon: 'bi-sliders', permissions: ['settings:manage'] },
     { to: '/dashboard/roles', label: 'Roles', icon: 'bi-shield-check', permissions: ['role:manage'] },
+    { to: '/dashboard/projects', label: 'Projects', icon: 'bi-kanban', permissions: ['portfolio:manage'] },
     { to: '/dashboard/adverts', label: 'Adverts', icon: 'bi-badge-ad', permissions: ['ad:manage'] },
     { to: '/dashboard/users', label: 'Users', icon: 'bi-people', permissions: ['user:manage'] },
   ];

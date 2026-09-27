@@ -258,8 +258,42 @@ export interface Project {
   accent: string;
   live_url: string | null;
   repo_url: string | null;
+  case_study_url?: string | null;
+  started_on?: string | null;
+  ended_on?: string | null;
   state: string;
   is_featured: boolean;
+  is_published: boolean;
+  position: number;
+  view_count?: number;
+}
+
+/** Body for POST /projects and PATCH /projects/{id} — mirrors ProjectWrite. */
+export interface ProjectInput {
+  title: string;
+  slug?: string | null;
+  tagline?: string | null;
+  summary?: string | null;
+  body?: string | null;
+  kind: string;
+  role?: string | null;
+  client?: string | null;
+  stack: string[];
+  highlights: string[];
+  metrics: Record<string, string>;
+  cover_url?: string | null;
+  gallery: string[];
+  icon?: string | null;
+  accent: string;
+  live_url?: string | null;
+  repo_url?: string | null;
+  case_study_url?: string | null;
+  started_on?: string | null;
+  ended_on?: string | null;
+  state: string;
+  is_featured: boolean;
+  is_published: boolean;
+  position: number;
 }
 
 export interface Service {
@@ -273,6 +307,8 @@ export interface Service {
   bullets: string[];
   starting_price_minor: number | null;
   currency: string;
+  position: number;
+  is_published: boolean;
 }
 
 /** Mirrors app/schemas/media.py's MediaRead exactly. */
@@ -319,6 +355,9 @@ export interface Experience {
   achievements: string[];
   stack: string[];
   logo_url: string | null;
+  website: string | null;
+  is_published: boolean;
+  position: number;
 }
 
 export interface SkillGroup {
@@ -338,7 +377,11 @@ export interface Testimonial {
   avatar_url: string | null;
   quote: string;
   rating: number;
+  source_url: string | null;
+  project_id?: number | null;
   is_featured: boolean;
+  is_published: boolean;
+  position: number;
 }
 
 export interface Sponsor {

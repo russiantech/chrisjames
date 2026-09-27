@@ -21,6 +21,7 @@ import type {
   PostDetail,
   PostSummary,
   Project,
+  ProjectInput,
   PublicSettings,
   ReactionSummary,
   Role,
@@ -199,6 +200,8 @@ export interface UploadMediaInput {
   caption?: string;
   labels?: string[];
   postId?: number;
+  /** Which subtree to file this under — must match the backend's allow-list (default 'uploads'). */
+  folder?: string;
 }
 
 /**
@@ -211,13 +214,14 @@ export interface UploadMediaInput {
  */
 export function useUploadMedia() {
   return useMutation({
-    mutationFn: ({ file, altText, caption, labels, postId }: UploadMediaInput) => {
+    mutationFn: ({ file, altText, caption, labels, postId, folder }: UploadMediaInput) => {
       const form = new FormData();
       form.append('file', file);
       if (altText) form.append('alt_text', altText);
       if (caption) form.append('caption', caption);
       if (labels?.length) form.append('labels', labels.join(','));
       if (postId != null) form.append('post_id', String(postId));
+      if (folder) form.append('folder', folder);
       return api.upload<MediaUploadResult>('/media', form);
     },
   });
@@ -343,6 +347,283 @@ export function useSkills() {
     queryKey: keys.skills,
     queryFn: () => api.get<SkillGroup[]>('/skills'),
     staleTime: 5 * 60_000,
+  });
+}
+
+// ---------------------------------------------------------- portfolio admin
+// Every dashboard mutation below invalidates both its own admin list and the
+// public read query for the same resource, since /dashboard/projects and
+// the live /projects page would otherwise disagree until a hard refresh.
+
+export function useAdminProjects() {
+  return useQuery({
+    queryKey: ['admin', 'projects'],
+    queryFn: () => api.get<Project[]>('/projects/admin'),
+  });
+}
+
+export function useAdminProject(id: number | undefined) {
+  return useQuery({
+    queryKey: ['admin', 'project', id],
+    queryFn: () => api.get<Project>(`/projects/id/${id}`),
+    enabled: id != null,
+  });
+}
+
+export function useCreateProject() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: ProjectInput) => api.post<Project>('/projects', payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'projects'] });
+      queryClient.invalidateQueries({ queryKey: keys.projects });
+    },
+  });
+}
+
+export function useUpdateProject() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...payload }: Partial<ProjectInput> & { id: number }) =>
+      api.patch<Project>(`/projects/${id}`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'projects'] });
+      queryClient.invalidateQueries({ queryKey: keys.projects });
+    },
+  });
+}
+
+export function useDeleteProject() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.delete<Message>(`/projects/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'projects'] });
+      queryClient.invalidateQueries({ queryKey: keys.projects });
+    },
+  });
+}
+
+export function useReorderProjects() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: number[]) => api.post<Message>('/projects/reorder', { ids }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'projects'] });
+      queryClient.invalidateQueries({ queryKey: keys.projects });
+    },
+  });
+}
+
+export interface ExperienceInput {
+  organisation: string;
+  title: string;
+  location?: string | null;
+  employment_type: string;
+  started_on: string;
+  ended_on?: string | null;
+  is_current: boolean;
+  summary?: string | null;
+  achievements: string[];
+  stack: string[];
+  logo_url?: string | null;
+  website?: string | null;
+  position: number;
+  is_published: boolean;
+}
+
+export function useAdminExperience() {
+  return useQuery({
+    queryKey: ['admin', 'experience'],
+    queryFn: () => api.get<Experience[]>('/experience/admin'),
+  });
+}
+
+export function useCreateExperience() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: ExperienceInput) => api.post<Experience>('/experience', payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'experience'] });
+      queryClient.invalidateQueries({ queryKey: keys.experience });
+    },
+  });
+}
+
+export function useUpdateExperience() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...payload }: Partial<ExperienceInput> & { id: number }) =>
+      api.patch<Experience>(`/experience/${id}`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'experience'] });
+      queryClient.invalidateQueries({ queryKey: keys.experience });
+    },
+  });
+}
+
+export function useDeleteExperience() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.delete<Message>(`/experience/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'experience'] });
+      queryClient.invalidateQueries({ queryKey: keys.experience });
+    },
+  });
+}
+
+export function useReorderExperience() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: number[]) => api.post<Message>('/experience/reorder', { ids }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'experience'] });
+      queryClient.invalidateQueries({ queryKey: keys.experience });
+    },
+  });
+}
+
+export interface ServiceInput {
+  title: string;
+  slug?: string | null;
+  summary: string;
+  body?: string | null;
+  icon: string;
+  accent: string;
+  bullets: string[];
+  starting_price_minor?: number | null;
+  currency: string;
+  position: number;
+  is_published: boolean;
+}
+
+export function useAdminServices() {
+  return useQuery({
+    queryKey: ['admin', 'services'],
+    queryFn: () => api.get<Service[]>('/services/admin'),
+  });
+}
+
+export function useCreateService() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: ServiceInput) => api.post<Service>('/services', payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'services'] });
+      queryClient.invalidateQueries({ queryKey: keys.services });
+    },
+  });
+}
+
+export function useUpdateService() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...payload }: Partial<ServiceInput> & { id: number }) =>
+      api.patch<Service>(`/services/${id}`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'services'] });
+      queryClient.invalidateQueries({ queryKey: keys.services });
+    },
+  });
+}
+
+/** Didn't exist before — the backend had no DELETE for services. */
+export function useDeleteService() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.delete<Message>(`/services/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'services'] });
+      queryClient.invalidateQueries({ queryKey: keys.services });
+    },
+  });
+}
+
+export function useReorderServices() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: number[]) => api.post<Message>('/services/reorder', { ids }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'services'] });
+      queryClient.invalidateQueries({ queryKey: keys.services });
+    },
+  });
+}
+
+export interface TestimonialInput {
+  author_name: string;
+  author_title?: string | null;
+  author_company?: string | null;
+  avatar_url?: string | null;
+  quote: string;
+  rating: number;
+  source_url?: string | null;
+  project_id?: number | null;
+  is_featured: boolean;
+  is_published: boolean;
+  position: number;
+}
+
+export function useAdminTestimonials() {
+  return useQuery({
+    queryKey: ['admin', 'testimonials'],
+    queryFn: () => api.get<Testimonial[]>('/testimonials/admin'),
+  });
+}
+
+export function useCreateTestimonial() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: TestimonialInput) => api.post<Testimonial>('/testimonials', payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] });
+      queryClient.invalidateQueries({ queryKey: keys.testimonials });
+    },
+  });
+}
+
+/** Didn't exist before — the backend had no PATCH for testimonials. */
+export function useUpdateTestimonial() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...payload }: Partial<TestimonialInput> & { id: number }) =>
+      api.patch<Testimonial>(`/testimonials/${id}`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] });
+      queryClient.invalidateQueries({ queryKey: keys.testimonials });
+    },
+  });
+}
+
+export function useDeleteTestimonial() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.delete<Message>(`/testimonials/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] });
+      queryClient.invalidateQueries({ queryKey: keys.testimonials });
+    },
+  });
+}
+
+export function useReorderTestimonials() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: number[]) => api.post<Message>('/testimonials/reorder', { ids }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'testimonials'] });
+      queryClient.invalidateQueries({ queryKey: keys.testimonials });
+    },
+  });
+}
+
+export function useReplaceSkills() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { name: string; icon: string | null; accent: string; description: string | null; skills: { name: string; level: number; icon: string | null }[] }[]) =>
+      api.put<SkillGroup[]>('/skills', payload),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: keys.skills }),
   });
 }
 

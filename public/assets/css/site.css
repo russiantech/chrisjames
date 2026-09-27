@@ -241,3 +241,27 @@
   padding: 0.35rem 0;
 }
 .cj-project-row__features i { color: var(--cj-brand); margin-top: 0.2rem; flex-shrink: 0; }
+
+/* --- ad slots ------------------------------------------------------------
+   .cj-ad / .cj-ad--empty were referenced in AdSlot.tsx but never actually
+   defined anywhere, so ad content rendered with no styling at all —
+   left-aligned, no card, no padding. This centers it within its slot. */
+.cj-ad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 1.25rem;
+  border: 1px solid var(--x-border-color, #e5e9f2);
+  border-radius: 1rem;
+  background: var(--x-surface-secondary-bg, #f7f9fc);
+}
+.cj-ad--empty { padding: 0.75rem; opacity: 0.85; }
+.cj-ad > div { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.cj-ad .card {
+  width: 100%;
+  max-width: 360px;
+  margin-inline: auto;
+  text-align: left; /* the ad card's own copy still reads left-to-right */
+}

@@ -1,6 +1,13 @@
 import type { ApiError, TokenPair } from './types';
 
-const BASE = '/api/v1';
+// Empty in dev (VITE_API_URL unset) → BASE is just '/api/v1', which Vite's
+// dev-server proxy (vite.config.ts) forwards to the local backend — nothing
+// changes for local development. In production, VITE_API_URL is set to the
+// deployed backend's origin (see .env.production), because the frontend and
+// backend are two separate Vercel deployments on two different domains —
+// a relative path would resolve against the frontend's own origin instead.
+const API_ROOT = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
+const BASE = `${API_ROOT}/api/v1`;
 const ACCESS_KEY = 'cj.access';
 const REFRESH_KEY = 'cj.refresh';
 
