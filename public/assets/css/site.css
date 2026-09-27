@@ -1,0 +1,243 @@
+/* Additions only. The two stylesheets above this one are the original
+   Webpixels build and are left untouched, so every existing class keeps
+   behaving exactly as it did. */
+
+:root {
+  --cj-brand: #5826ee;
+  --cj-accent: #f38207;
+}
+
+/* --- code blocks ------------------------------------------------------ */
+.cj-code {
+  margin: 1.75rem 0;
+  border: 1px solid var(--x-border-color, #e7eaf0);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #0d1117;
+}
+.cj-code__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.9rem;
+  background: #161b22;
+  border-bottom: 1px solid #21262d;
+}
+.cj-code__name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #8b949e;
+  text-transform: uppercase;
+}
+.cj-code__copy {
+  border: 1px solid #30363d;
+  background: transparent;
+  color: #8b949e;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.cj-code__copy:hover { color: #e6edf3; border-color: #8b949e; }
+.cj-code__copy[data-copied] { color: #3fb950; border-color: #3fb950; }
+
+.cj-code__body { margin: 0; overflow-x: auto; }
+.cj-code__body pre {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  background: transparent;
+  color: #e6edf3;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.cj-code__body table { width: 100%; border-collapse: collapse; }
+.cj-code__body td.linenos {
+  width: 1%;
+  user-select: none;
+  color: #484f58;
+  text-align: right;
+  border-right: 1px solid #21262d;
+}
+.cj-code__body td.linenos pre { padding-right: 0.85rem; color: #484f58; }
+
+/* --- prose ------------------------------------------------------------ */
+.cj-prose { font-size: 1.05rem; line-height: 1.8; color: var(--x-body-color, #525f7f); }
+.cj-prose > * + * { margin-top: 1.25rem; }
+.cj-prose h2 { margin-top: 2.75rem; font-size: 1.6rem; font-weight: 700; }
+.cj-prose h3 { margin-top: 2rem; font-size: 1.25rem; font-weight: 700; }
+.cj-prose img { max-width: 100%; height: auto; border-radius: 0.75rem; }
+.cj-prose blockquote {
+  border-left: 3px solid var(--cj-brand);
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: var(--x-heading-color, #16192c);
+}
+.cj-prose :not(pre) > code {
+  background: rgba(88, 38, 238, 0.08);
+  color: var(--cj-brand);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3rem;
+  font-size: 0.875em;
+}
+.cj-prose table { width: 100%; border-collapse: collapse; font-size: 0.925rem; }
+.cj-prose th, .cj-prose td {
+  border-bottom: 1px solid var(--x-border-color, #e7eaf0);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.cj-mention { font-weight: 600; text-decoration: none; }
+
+/* --- small helpers ---------------------------------------------------- */
+.cj-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap;
+}
+.cj-cover { object-fit: cover; width: 100%; }
+.cj-line-clamp-2 {
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.cj-line-clamp-3 {
+  display: -webkit-box; -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.cj-transition { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.cj-transition:hover { transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cj-transition, .cj-transition:hover { transition: none; transform: none; }
+}
+
+/* --- compact modern section system ------------------------------------ */
+/* A tighter rhythm than the original template's default py-10/py-14, used
+   consistently across the landing and about pages for a denser, less
+   "generic SaaS template" feel. */
+.cj-section { padding-block: 3.5rem; }
+.cj-section--lg { padding-block: 4.5rem; }
+.cj-section--tight { padding-block: 2.5rem; }
+
+.cj-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--cj-brand);
+}
+.cj-eyebrow::before {
+  content: ''; width: 0.4rem; height: 0.4rem; border-radius: 50%;
+  background: var(--cj-brand); display: inline-block;
+}
+
+/* Stat blocks — the numbers row (years, projects, businesses, rating). */
+.cj-stat { line-height: 1.1; }
+.cj-stat__value {
+  font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800;
+  letter-spacing: -0.02em; color: var(--x-heading-color, #16192c);
+}
+.cj-stat__label {
+  font-size: 0.8rem; color: var(--x-body-color, #6b7b93); margin-top: 0.15rem;
+}
+
+/* Mission / vision style icon cards. */
+.cj-value-card {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.25rem 0; border-top: 1px solid var(--x-border-color, #e7eaf0);
+}
+.cj-value-card:first-child { border-top: none; padding-top: 0; }
+.cj-value-card__icon {
+  flex-shrink: 0; width: 2.75rem; height: 2.75rem; border-radius: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(88, 38, 238, 0.1); color: var(--cj-brand); font-size: 1.1rem;
+}
+
+/* Timeline-style experience list: a rail with dots, tighter than cards. */
+.cj-timeline { position: relative; }
+.cj-timeline::before {
+  content: ''; position: absolute; left: 0.6rem; top: 0.4rem; bottom: 0.4rem;
+  width: 2px; background: var(--x-border-color, #e7eaf0);
+}
+.cj-timeline-item { position: relative; padding-left: 2.25rem; }
+.cj-timeline-item + .cj-timeline-item { margin-top: 2rem; }
+.cj-timeline-item::before {
+  content: ''; position: absolute; left: 0.15rem; top: 0.35rem;
+  width: 1rem; height: 1rem; border-radius: 50%;
+  background: #fff; border: 3px solid var(--cj-brand);
+}
+.cj-timeline-item--muted::before { border-color: var(--x-border-color, #cbd3e0); }
+
+/* Small "chip" used for role achievements / project highlights, more
+   compact and scannable than a bulleted list. */
+.cj-chip-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cj-chip {
+  display: flex; align-items: flex-start; gap: 0.45rem;
+  font-size: 0.83rem; line-height: 1.4; color: var(--x-body-color, #525f7f);
+  background: var(--x-surface-secondary-bg, #f7f9fc);
+  border: 1px solid var(--x-border-color, #e7eaf0);
+  border-radius: 0.6rem; padding: 0.5rem 0.75rem; flex: 1 1 260px;
+}
+.cj-chip i { color: var(--cj-brand); margin-top: 0.15rem; flex-shrink: 0; }
+
+/* --- about page portrait ----------------------------------------------- */
+.cj-portrait {
+  position: relative;
+  max-width: 380px;
+  aspect-ratio: 4 / 5;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--cj-brand), var(--cj-accent));
+  box-shadow: 0 1.5rem 3rem rgba(22, 25, 44, 0.14);
+}
+.cj-portrait::before {
+  content: '';
+  position: absolute;
+  inset: -18% -18% auto auto;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+.cj-portrait__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cj-portrait__fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+}
+.cj-portrait--fallback .cj-portrait__fallback { display: flex; }
+
+/* --- alternating project rows ------------------------------------------ */
+.cj-project-row + .cj-project-row { margin-top: 4rem; }
+.cj-project-row__media {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--x-surface-secondary-bg, #f7f9fc);
+  box-shadow: 0 1rem 2.5rem rgba(22, 25, 44, 0.1);
+}
+.cj-project-row__media img { width: 100%; height: 100%; object-fit: cover; }
+.cj-project-row__media--empty {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--x-body-color, #6b7b93); font-size: 2.5rem;
+}
+.cj-project-row__features { list-style: none; margin: 0; padding: 0; }
+.cj-project-row__features li {
+  display: flex; gap: 0.6rem; align-items: flex-start;
+  font-size: 0.9rem; color: var(--x-body-color, #525f7f);
+  padding: 0.35rem 0;
+}
+.cj-project-row__features i { color: var(--cj-brand); margin-top: 0.2rem; flex-shrink: 0; }
