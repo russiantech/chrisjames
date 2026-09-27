@@ -69,7 +69,7 @@ export function About() {
             <div className="col-lg-6 order-lg-2">
               <div className="cj-portrait mx-auto mx-lg-0">
                 <img
-                  src="/assets/img/profile.jpg"
+                  src="/assets/img/techa_hero.png"
                   alt="Christopher James"
                   className="cj-portrait__img"
                   loading="eager"

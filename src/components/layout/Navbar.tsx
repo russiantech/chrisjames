@@ -93,7 +93,7 @@ export function Navbar() {
               <Logo />
             </div>
             <span className="text-heading h4 font-bold ls-tight mb-0">
-              {settings?.site_title ?? 'Christopher James'}
+              {settings?.owner_name_short ?? settings?.site_title ?? 'Chris-James'}
             </span>
           </Link>
 

@@ -186,7 +186,7 @@
   aspect-ratio: 4 / 5;
   border-radius: 1.5rem;
   overflow: hidden;
-  background: linear-gradient(155deg, var(--cj-brand), var(--cj-accent));
+  /* background: linear-gradient(155deg, var(--cj-brand), var(--cj-accent)); */
   box-shadow: 0 1.5rem 3rem rgba(22, 25, 44, 0.14);
 }
 .cj-portrait::before {

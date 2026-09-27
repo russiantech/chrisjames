@@ -443,6 +443,7 @@ export interface PublicSettings {
   comments_require_login: boolean;
   auto_approve_comments: boolean;
   owner_name: string;
+  owner_name_short: string;
   owner_email: string;
   currency: string;
   max_upload_mb: number;

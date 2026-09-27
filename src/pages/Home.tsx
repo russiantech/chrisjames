@@ -60,15 +60,14 @@ export function Home() {
               </div>
 
               <div className="d-flex align-items-center gap-4 mt-6 text-sm text-muted">
-                <a
-                  className="text-muted text-decoration-none"
-                  href="https://github.com/russiantech"
-                  target="_blank"
-                  rel="noreferrer"
+                <button className="text-muted text-decoration-none rounded disabled"
+                  // href="https://github.com/russiantech"
+                  // target="_blank"
+                  // rel="noreferrer"
                 >
                   <i className="bi bi-github me-2" />
                   GitHub
-                </a>
+                </button>
                 <a
                   className="text-muted text-decoration-none"
                   href="https://www.linkedin.com/in/chrisjsm"
@@ -82,8 +81,7 @@ export function Home() {
             </div>
 
             <div className="col-lg-6">
-              <img
-                src="/assets/img/techa_hero.png"
+              <img src="/assets/img/personal/chris-james.webp"
                 alt="Dashboard interface from one of the products"
                 className="img-fluid rounded-4 shadow-4"
                 loading="eager"
